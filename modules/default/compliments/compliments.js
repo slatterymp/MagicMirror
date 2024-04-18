@@ -1,12 +1,77 @@
+/* MagicMirror²
+ * Module: Compliments
+ *
+ * By Michael Teeuw https://michaelteeuw.nl
+ * MIT Licensed.
+ */
 Module.register("compliments", {
 	// Module config defaults.
 	defaults: {
 		compliments: {
-			anytime: ["Hey there sexy!"],
-			morning: ["Good morning, handsome!", "Enjoy your day!", "How was your sleep?"],
-			afternoon: ["Hello, beauty!", "You look sexy!", "Looking good today!"],
-			evening: ["Wow, you look hot!", "You look nice!", "Hi, sexy!"],
-			"....-01-01": ["Happy new year!"]
+			morning: ["Good morning.", "Buenos dias."],
+			afternoon: ["Good afternoon.", "Buenas tardes."],
+			evening: ["Good evening.", "Buenas noches."],
+			"....-01-01": ["Happy New Year.", "Feliz ano nuevo."],
+			"....-02-14": ["Happy Valentines Day.", "Feliz dia de San Valentin."],
+			"....-02-16": ["Happy Birthday Martha.", "Feliz cumpleanos Martha."],
+			"....-03-03": ["Happy Birthday Mommy.", "Feliz cumpleanos Mami."],
+			"....-03-08": ["Happy Women's Day.", "Feliz dia de la mujer.", "Remember the time change.", "Recuerda adelantar tu reloj una hora."],
+			"....-03-09": ["Remember the time change."],
+			"....-03-17": ["Happy St. Patrick's Day."],
+			"....-03-20": ["First day of spring.", "Es el primer dia de primavera."],
+			"....-03-31": ["Happy Easter."],
+			"....-04-01": ["Happy Easter.", "Felices Pascuas"],
+			"....-04-19": ["Happy Birthday Finn.", "Feliz cumpleanos Finn."],
+			"....-05-10": ["Happy Mother's Day.", "Feliz dia de la madre."],
+			"....-05-12": ["Happy Mother's Day."],
+			"....-05-26": ["Happy Anniversary."],
+			"....-05-27": ["Enjoy your Memorial Day."],
+			"....-06-16": ["Happy Father's Day."],
+			"....-07-04": ["Happy Fourth of July."],
+			"....-09-02": ["Enjoy your Labor Day."],
+			"....-10-14": ["Enjoy your Columbus Day."],
+			"....-10-31": ["Trick or treat.", "Happy Halloween."],
+			"....-11-23": ["Happy Thanksgiving."],
+			"....-12-01": ["24 days until Christmas.", "24 dias hasta Navidad."],
+			"....-12-02": ["23 days until Christmas.", "23 dias hasta Navidad."],
+			"....-12-03": ["22 days until Christmas.", "22 dias hasta Navidad."],
+			"....-12-04": ["21 days until Christmas.", "21 dias hasta Navidad."],
+			"....-12-05": ["20 days until Christmas.", "20 dias hasta Navidad."],
+			"....-12-06": ["19 days until Christmas.", "19 dias hasta Navidad."],
+			"....-12-07": ["18 days until Christmas.", "18 dias hasta Navidad."],
+			"....-12-08": ["17 days until Christmas.", "17 dias hasta Navidad."],
+			"....-12-09": ["16 days until Christmas.", "16 dias hasta Navidad."],
+			"....-12-10": ["15 days until Christmas.", "15 dias hasta Navidad."],
+			"....-12-11": ["14 days until Christmas.", "14 dias hasta Navidad."],
+			"....-12-12": ["13 days until Christmas.", "13 dias hasta Navidad."],
+			"....-12-13": ["12 days until Christmas.", "12 dias hasta Navidad."],
+			"....-12-14": ["11 days until Christmas.", "11 dias hasta Navidad."],
+			"....-12-15": ["10 days until Christmas.", "10 dias hasta Navidad."],
+			"....-12-16": ["9 days until Christmas.", "9 dias hasta Navidad."],
+			"....-12-17": ["8 days until Christmas.", "8 dias hasta Navidad."],
+			"....-12-18": ["7 days until Christmas.", "7 dias hasta Navidad."],
+			"....-12-19": ["6 days until Christmas.", "6 dias hasta Navidad."],
+			"....-12-20": ["5 days until Christmas.", "5 dias hasta Navidad."],
+			"....-12-21": ["4 days until Christmas.", "4 dias hasta Navidad."],
+			"....-12-22": ["3 days until Christmas.", "3 dias hasta Navidad."],
+			"....-12-23": ["2 days until Christmas.", "2 dias hasta Navidad."],
+			"....-12-24": ["It's Christmas Eve.", "Es Nochebuena."],
+			"....-12-25": ["Merry Christmas.", "Feliz Navidad."],
+			"....-12-31": ["It's New Year's Eve.", "Es Nochevieja."],
+			rain: ["It's raining.", "Esta lloviendo."],
+			showers: ["It's raining.", "Esta lloviendo."],
+			thunderstorm: ["It's storming.", "Esta tormenta."],
+			snow: ["It's snowing.", "Esta nevando."],
+			day_sunny: ["It's sunny today.", "Hoy esta soleado."],
+			cloudy: ["It's cloudy today.", "Esta nublado hoy."],
+			cloudy_windy: ["It's cloudy and windy.", "Esta nublado y ventoso."],
+			night_cloudy: ["It's cloudy tonight.", "Esta nublado esta noche."],
+			night_alt_cloudy_windy: ["It's cloudy and windy.", "Esta nublado y ventoso."],
+			night_clear: ["It's a clear night.", "Es una noche clara."],
+			night_showers: ["It's a rainy night.", "Es una noche lluviosa."],
+			night_rain: ["It's a rainy night.", "Es una noche lluviosa."],
+			night_snow: ["It's a snowy night.", "Es una noche nevada."],
+			night_thunderstorm: ["It's a stormy night.", "Es una noche tormentosa."]
 		},
 		updateInterval: 30000,
 		remoteFile: null,
@@ -22,12 +87,12 @@ Module.register("compliments", {
 	currentWeatherType: "",
 
 	// Define required scripts.
-	getScripts () {
+	getScripts: function () {
 		return ["moment.js"];
 	},
 
 	// Define start sequence.
-	async start () {
+	start: async function () {
 		Log.info(`Starting module: ${this.name}`);
 
 		this.lastComplimentIndex = -1;
@@ -49,8 +114,8 @@ Module.register("compliments", {
 	 * @param {string[]} compliments Array with compliments.
 	 * @returns {number} a random index of given array
 	 */
-	randomIndex (compliments) {
-		if (compliments.length <= 1) {
+	randomIndex: function (compliments) {
+		if (compliments.length === 1) {
 			return 0;
 		}
 
@@ -73,7 +138,7 @@ Module.register("compliments", {
 	 * Retrieve an array of compliments for the time of the day.
 	 * @returns {string[]} array with compliments for the time of the day.
 	 */
-	complimentArray () {
+	complimentArray: function () {
 		const hour = moment().hour();
 		const date = moment().format("YYYY-MM-DD");
 		let compliments = [];
@@ -109,7 +174,7 @@ Module.register("compliments", {
 	 * Retrieve a file from the local filesystem
 	 * @returns {Promise} Resolved when the file is loaded
 	 */
-	async loadComplimentFile () {
+	loadComplimentFile: async function () {
 		const isRemote = this.config.remoteFile.indexOf("http://") === 0 || this.config.remoteFile.indexOf("https://") === 0,
 			url = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
 		const response = await fetch(url);
@@ -120,7 +185,7 @@ Module.register("compliments", {
 	 * Retrieve a random compliment.
 	 * @returns {string} a compliment
 	 */
-	getRandomCompliment () {
+	getRandomCompliment: function () {
 		// get the current time of day compliments list
 		const compliments = this.complimentArray();
 		// variable for index to next message to display
@@ -139,7 +204,7 @@ Module.register("compliments", {
 	},
 
 	// Override dom generator.
-	getDom () {
+	getDom: function () {
 		const wrapper = document.createElement("div");
 		wrapper.className = this.config.classes ? this.config.classes : "thin xlarge bright pre-line";
 		// get the compliment text
@@ -167,7 +232,7 @@ Module.register("compliments", {
 	},
 
 	// Override notification handler.
-	notificationReceived (notification, payload, sender) {
+	notificationReceived: function (notification, payload, sender) {
 		if (notification === "CURRENTWEATHER_TYPE") {
 			this.currentWeatherType = payload.type;
 		}
